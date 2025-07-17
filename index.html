@@ -2,49 +2,55 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div id="notification"></div>
+<div id="notification"></div>
 
-  <div class="container" id="loginBox">
-    <h2>Login</h2>
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Example: ahmad" autocomplete="username" />
-    <label for="password">Password:</label>
-    <input type="password" id="password" placeholder="Example: 12345" autocomplete="current-password" />
-    <button id="loginBtn">Login</button>
-    <div class="spinner" id="spinner"></div>
-    <div class="extra-links">
-      <a href="#" target="_blank" id="createAccountLink">Create Account</a>
-      <a onclick="toggleForgot(true)">Forgot Password?</a>
-    </div>
+<div class="container" id="loginBox">
+  <h2>Login</h2>
+  <label for="username">Username:</label>
+  <input type="text" id="username" placeholder="Example: ahmad" autocomplete="username"
+    oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')" />
+  <label for="password">Password:</label>
+  <input type="password" id="password" placeholder="Example: 12345" autocomplete="current-password"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+  <button id="loginBtn">Login</button>
+  <div class="spinner" id="spinner"></div>
+  <div class="extra-links">
+    <a href="#" id="createAccountLink">Create Account</a>
+    <a onclick="toggleForgot(true)">Forgot Password?</a>
+  </div>
+</div>
+
+<div class="container" id="forgotBox">
+  <div class="back-icon" onclick="toggleForgot(false)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
   </div>
 
-  <div class="container" id="forgotBox">
-    <div class="back-arrow" onclick="toggleForgot(false)">
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <path d="M15 18L9 12L15 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <h2 id="recoveryTitle">Account Recovery</h2>
-    <form id="forgotForm" onsubmit="return false;">
-      <label for="code">Security Code:</label>
-      <input type="text" id="code" placeholder="1234" maxlength="5" />
-      <button type="button" id="recoverBtn">Recover Account</button>
-    </form>
-    <div id="recoveredSection" style="display:none;">
-      <h2>Account Details</h2>
-      <div id="recoveredData" class="output-box"></div>
-    </div>
+  <h2 id="recoveryTitle">Account Recovery</h2>
+
+  <form id="forgotForm" onsubmit="return false;">
+    <label for="code">Security Code:</label>
+    <input type="text" id="code" placeholder="1234" maxlength="5"
+      oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+    <button type="button" onclick="recoverAccount()">Recover Account</button>
+  </form>
+
+  <div id="recoveredSection" style="display:none;">
+    <h2>Account Details</h2>
+    <div id="recoveredData" class="output-box"></div>
   </div>
+</div>
 
-  <div id="appContainer"></div>
+<div id="appContainer"></div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
