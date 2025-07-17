@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -28,12 +28,7 @@
 </div>
 
 <div class="container" id="forgotBox">
-  <button class="back-arrow" onclick="toggleForgot(false)">
-    <svg width="24" height="24" viewBox="0 0 24 24">
-      <path d="M15 18L9 12L15 6" stroke="#0056b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    رجوع
-  </button>
+  <button class="back-arrow" onclick="toggleForgot(false)">← رجوع</button>
 
   <h2 id="recoveryTitle">Account Recovery</h2>
 
@@ -50,7 +45,7 @@
   </div>
 </div>
 
-<div id="appContainer"></div>
+<div id="appContainer" style="display:none;"></div>
 
 <script src="script.js"></script>
 </body>
