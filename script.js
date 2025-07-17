@@ -13,16 +13,19 @@ function decodeBase64(str) {
 
 const dataURL = decodeBase64(encodedDataURL);
 const instagramLink = decodeBase64(encodedInstagram);
+
 document.getElementById('createAccountLink').href = instagramLink;
 
 function isMobile() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
+
 if (!isMobile()) {
   document.body.innerHTML = '<h2 style="text-align:center; margin-top: 50px; color: red;">هذا الموقع مخصص للأجهزة المحمولة فقط.</h2>';
 }
 
 document.addEventListener('contextmenu', event => event.preventDefault());
+
 document.addEventListener('keydown', function(event) {
   if (
     event.key === 'F12' ||
@@ -37,6 +40,7 @@ document.addEventListener('keydown', function(event) {
 const loginBtn = document.getElementById('loginBtn');
 const spinner = document.getElementById('spinner');
 const notification = document.getElementById('notification');
+
 let notificationTimeout;
 
 function showNotification(key, duration = 4000) {
@@ -103,8 +107,7 @@ loginBtn.addEventListener('click', () => {
         document.getElementById('forgotBox').style.display = 'none';
         const appContainer = document.getElementById('appContainer');
         appContainer.style.display = 'block';
-        const encodedLink = btoa(userFound.lnk);
-        const decodedLink = decodeBase64(encodedLink);
+
         appContainer.innerHTML = `<iframe src="${userFound.lnk}" allowfullscreen></iframe>`;
       } else {
         showNotification("failLogin", 5000);
