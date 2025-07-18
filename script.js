@@ -11,23 +11,30 @@ function decodeBase64(str) {
   }
 }
 
+const dataURL = decodeBase64(encodedDataURL);
+const instagramLink = decodeBase64(encodedInstagram);
+document.getElementById('createAccountLink').href = instagramLink;
+
 function isMobile() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
-function isExeApp() {
-  return navigator.userAgent.includes("MyAppExe");
+if (!isMobile()) {
+  document.body.innerHTML = '<h2 style="text-align:center; margin-top: 50px; color: red;">هذا الموقع مخصص للأجهزة المحمولة فقط.</h2>';
 }
 
-// السماح فقط للجوال أو التطبيق exe
-if (!isMobile() && !isExeApp()) {
-  document.body.innerHTML = '<h2 style="text-align:center; margin-top: 50px; color: red;">هذا الموقع مخصص للأجهزة المحمولة أو التطبيق فقط.</h2>';
-  throw new Error("Unauthorized platform");
-}
+document.addEventListener('contextmenu', event => event.preventDefault());
 
-const dataURL = decodeBase64(encodedDataURL);
-const instagramLink = decodeBase64(encodedInstagram);
-document.getElementById('createAccountLink').href = instagramLink;
+document.addEventListener('keydown', function(event) {
+  if (
+    event.key === 'F12' ||
+    (event.ctrlKey && (event.key === 'u' || event.key === 'U')) ||
+    (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'i')) ||
+    (event.ctrlKey && event.shiftKey && (event.key === 'J' || event.key === 'j'))
+  ) {
+    event.preventDefault();
+  }
+});
 
 const loginBtn = document.getElementById('loginBtn');
 const spinner = document.getElementById('spinner');
@@ -98,6 +105,9 @@ loginBtn.addEventListener('click', () => {
         document.getElementById('forgotBox').style.display = 'none';
         const appContainer = document.getElementById('appContainer');
         appContainer.style.display = 'block';
+
+        const encodedLink = btoa(userFound.lnk);
+        const decodedLink = decodeBase64(encodedLink);
         appContainer.innerHTML = `<iframe src="${userFound.lnk}" allowfullscreen></iframe>`;
       } else {
         showNotification("failLogin", 5000);
