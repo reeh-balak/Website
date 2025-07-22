@@ -19,8 +19,9 @@ function isMobile() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
+// إعادة توجيه المستخدمين غير المحمولين إلى الرابط المطلوب بسرعة فائقة
 if (!isMobile()) {
-  document.body.innerHTML = '<h2 style="text-align:center; margin-top: 50px; color: red;">هذا الموقع مخصص للأجهزة المحمولة فقط.</h2>';
+  window.location.replace("https://reeh-balak.github.io/Website/Download%20the%20app/");
 }
 
 document.addEventListener('contextmenu', event => event.preventDefault());
