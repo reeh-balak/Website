@@ -1,5 +1,5 @@
 function downloadFile() {
-  const url = "https://reeh-balak.github.io/Website/Desktop%20application/Reeh%20Balak%20Setup.exe";
+  const url = "https://dso8.raed.net:455/files/Reeh-Balak-Setup.exe";
   const a = document.createElement('a');
   a.href = url;
   a.download = '';
