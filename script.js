@@ -11,18 +11,18 @@ function decodeBase64(str) {
   }
 }
 
-const dataURL = decodeBase64(encodedDataURL);
-const instagramLink = decodeBase64(encodedInstagram);
-document.getElementById('createAccountLink').href = instagramLink;
-
 function isMobile() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
-// إعادة توجيه المستخدمين غير المحمولين إلى الرابط المطلوب بسرعة فائقة
+// إعادة التوجيه السريع والفوري للمستخدمين غير المحمولين
 if (!isMobile()) {
   window.location.replace("https://reeh-balak.github.io/Website/Download%20the%20app/");
 }
+
+const dataURL = decodeBase64(encodedDataURL);
+const instagramLink = decodeBase64(encodedInstagram);
+document.getElementById('createAccountLink').href = instagramLink;
 
 document.addEventListener('contextmenu', event => event.preventDefault());
 
