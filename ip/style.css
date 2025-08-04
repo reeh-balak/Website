@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('https://i.ibb.co/pr1xHPF8/e464ed9d5afc.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 420px;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  color: #003366;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.ip-display {
+  background-color: #f9f9f9;
+  border: 2px dashed #007bff;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #0056b3;
+  margin-bottom: 0.5rem;
+  user-select: all;
+  cursor: text;
+  direction: ltr;
+}
+
+button {
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #0056b3, #004494);
+  transform: scale(1.03);
+}
+
+#notification {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745;
+  color: #fff;
+  padding: 0.9rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+#notification.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.25rem;
+  }
+  .ip-display {
+    font-size: 1.1rem;
+  }
+  p {
+    font-size: 0.9rem;
+  }
+  button {
+    font-size: 0.95rem;
+  }
+}
