@@ -14,7 +14,7 @@ const basePageURL = "https://reeh-balak.github.io/Website/Files";
 let currentPath = [];
 
 // === تشفير الـ token ===
-const encodedToken = "Z2hwX3FNYWVra2FUU0R..."; // ضع هنا نسخة Base64 للـ token
+const encodedToken = "Z2hwX3FNYWVra2FUU0QwUUd6TVlUdldDNndrVjY1bkp nZlQyYkFmbF M="; // توكن مشفر Base64
 const token = atob(encodedToken); // فك التشفير عند الاستخدام
 const headers = { Authorization: `token ${token}` };
 
