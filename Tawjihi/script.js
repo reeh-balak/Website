@@ -1,3 +1,5 @@
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script>
 // === حماية الموقع من أدوات المطور ===
 document.addEventListener('keydown', function(e) {
   if(e.keyCode === 123) e.preventDefault(); // F12
@@ -10,7 +12,10 @@ document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
 const baseAPI = "https://api.github.com/repos/reeh-balak/Website/contents/Files";
 const basePageURL = "https://reeh-balak.github.io/Website/Files";
 let currentPath = [];
-const token = "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";
+
+// === تشفير الـ token ===
+const encodedToken = "Z2hwX3FNYWVra2FUU0R..."; // ضع هنا نسخة Base64 للـ token
+const token = atob(encodedToken); // فك التشفير عند الاستخدام
 const headers = { Authorization: `token ${token}` };
 
 const filesList = document.getElementById("filesList");
@@ -129,3 +134,4 @@ function formatSize(bytes){
 
 // === تحميل الملفات عند البداية ===
 loadFiles(currentPath);
+</script>
