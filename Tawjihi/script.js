@@ -10,7 +10,7 @@ document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
 const baseAPI = "https://api.github.com/repos/reeh-balak/Website/contents/Files";
 const basePageURL = "https://reeh-balak.github.io/Website/Files";
 let currentPath = [];
-const token = "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";
+const token = "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";
 const headers = { Authorization: `token ${token}` };
 
 const filesList = document.getElementById("filesList");
