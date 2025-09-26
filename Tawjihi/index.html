@@ -1,45 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tawjihi-08</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Files Explorer</title>
 
-  <!-- Plyr CSS -->
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<!-- Plyr CSS -->
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<!-- رابط لملف CSS الخارجي -->
+<link rel="stylesheet" href="style.css">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- رسالة عند عدم تفعيل JS -->
-  <noscript>
-    <div id="no-js-overlay">
-      ⚠ Please enable JavaScript to use this site.
-    </div>
-  </noscript>
+<header>⌬ Grade XII-D | Engineering Field ⌬</header>
 
-  <!-- الرأس -->
-  <header>⌬ Grade XII-D | Engineering Field ⌬</header>
+<main>
+  <div id="pathBar"></div> <!-- شريط المسار -->
+  <button class="back-btn" style="display:none">⬅ Back</button>
+  <div class="files-list" id="filesList"></div> <!-- قائمة الملفات -->
+</main>
 
-  <!-- المحتوى الرئيسي -->
-  <main>
-    <button class="back-btn" style="display:none">⬅ Back</button>
-    <div class="files-list" id="filesList"></div>
-  </main>
+<div class="overlay" id="overlay">
+  <div id="preview"></div> <!-- عرض الملف -->
+  <button class="close-btn" id="closeOverlay">✖ Close</button>
+</div>
 
-  <!-- نافذة المعاينة -->
-  <div class="overlay" id="overlay">
-    <div id="preview"></div>
-    <button class="close-btn" id="closeOverlay">✖ Close</button>
-  </div>
+<footer>
+  © 2025 All Rights Reserved | Crafted by 
+  <a href="https://www.instagram.com/a7md__08/" target="_blank">Ahmad Al-Ghwairy</a>
+</footer>
 
-  <!-- Plyr JS -->
-  <script src="https://cdn.plyr.io/3.7.8/plyr.min.js"></script>
-
-  <!-- Custom JS -->
-  <script src="script.js"></script>
+<!-- Plyr JS -->
+<script src="https://cdn.plyr.io/3.7.8/plyr.min.js"></script>
+<!-- رابط لملف JS الخارجي -->
+<script src="script.js"></script>
 
 </body>
 </html>

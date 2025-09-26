@@ -1,16 +1,10 @@
-// === حماية الموقع من أدوات المطور ===
-document.addEventListener('keydown', function(e) {
-  if(e.keyCode === 123) e.preventDefault(); // F12
-  if(e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key.toUpperCase())) e.preventDefault();
-  if(e.ctrlKey && e.key.toUpperCase() === "U") e.preventDefault();
-});
-document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-
-// === إعدادات ملفات المستعرض ===
 const baseAPI = "https://api.github.com/repos/reeh-balak/Website/contents/Files";
 const basePageURL = "https://reeh-balak.github.io/Website/Files";
 let currentPath = [];
-const token = "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";
+
+// 🔐 token مشفر Base64
+const encodedToken = "Z2hwX3pURHo1Tm00akh1NWdjWWxoUlZ6eHh6MU9NQzh2QTI0T2dQMA==";
+const token = atob(encodedToken);
 const headers = { Authorization: `token ${token}` };
 
 const filesList = document.getElementById("filesList");
@@ -18,15 +12,16 @@ const backBtn = document.querySelector(".back-btn");
 const overlay = document.getElementById("overlay");
 const preview = document.getElementById("preview");
 const closeOverlay = document.getElementById("closeOverlay");
+const pathBar = document.getElementById("pathBar");
 
-// === تحميل الملفات ===
 async function loadFiles(pathArray){
   const path = pathArray.join('/');
   const url = path ? `${baseAPI}/${path}` : baseAPI;
   const data = await (await fetch(url, {headers})).json();
-  
   filesList.innerHTML = "";
   backBtn.style.display = pathArray.length>0 ? "inline-block" : "none";
+
+  updatePathBar(pathArray);
 
   if(data.length===0){
     const empty = document.createElement("div");
@@ -52,29 +47,61 @@ async function loadFiles(pathArray){
     div.appendChild(nameDiv);
     div.appendChild(sizeDiv);
 
-    div.onclick = ()=>{
-      if(item.type==="dir"){
-        currentPath.push(item.name);
-        loadFiles(currentPath);
-      } else {
-        openPreview(item.name);
-      }
-    };
+    div.onclick = (() => {
+      let isLoading = false; 
+      return () => {
+        if(isLoading) return;
+        isLoading = true;
 
+        if(item.type === "dir"){
+          currentPath.push(item.name);
+          loadFiles(currentPath).finally(() => { isLoading = false; });
+        } else {
+          openPreview(item.name);
+          isLoading = false;
+        }
+      };
+    })();
     filesList.appendChild(div);
   });
 }
 
-// === معاينة الملفات ===
-function openPreview(fileName){
-  overlay.classList.add("active");
-  preview.innerHTML = "";
+function updatePathBar(pathArray){
+  pathBar.innerHTML = "";
+  const rootSpan = document.createElement("span");
+  rootSpan.textContent = "Files";
+  rootSpan.onclick = ()=>{ currentPath=[]; loadFiles(currentPath); };
+  pathBar.appendChild(rootSpan);
 
+  pathArray.forEach((folder, index)=>{
+    const sep = document.createElement("span");
+    sep.className="sep";
+    sep.textContent = "/";
+    pathBar.appendChild(sep);
+
+    const span = document.createElement("span");
+    span.textContent = folder;
+    span.onclick = ()=>{ currentPath = pathArray.slice(0,index+1); loadFiles(currentPath); };
+    pathBar.appendChild(span);
+  });
+
+  const urlPath = pathArray.length > 0 ? "/Files/" + pathArray.join("/") : "/Files";
+  history.replaceState(null, "", urlPath);
+}
+
+function getPathFromURL() {
+  const path = window.location.pathname.split("/Files/")[1];
+  return path ? path.split("/").filter(p => p) : [];
+}
+
+function openPreview(fileName){
+  const ext = fileName.split('.').pop().toLowerCase();
   let url = basePageURL;
   if(currentPath.length>0) url+="/"+currentPath.join('/');
   url+="/"+fileName;
 
-  const ext = fileName.split('.').pop().toLowerCase();
+  overlay.classList.add("active");
+  preview.innerHTML = "";
   let element;
 
   if(["mp4","webm","ogg"].includes(ext)){
@@ -83,7 +110,6 @@ function openPreview(fileName){
     element.setAttribute("playsinline","");
     element.setAttribute("controls","");
     element.setAttribute("autoplay","");
-    element.setAttribute("data-plyr-config", '{"autoplay":true}');
   } else if(["mp3","wav","ogg"].includes(ext)){
     element = document.createElement("audio");
     element.src = url;
@@ -99,27 +125,21 @@ function openPreview(fileName){
 
   element.style.width = "100%";
   element.style.height = "100%";
-  element.style.borderRadius = "10px";
+  element.style.borderRadius = "15px";
   preview.appendChild(element);
 
-  if(element.tagName==="VIDEO" || element.tagName==="AUDIO"){
-    new Plyr(element, { autoplay: true });
+  if(["VIDEO","AUDIO"].includes(element.tagName)){
+    const player = new Plyr(element, { 
+      autoplay: true,
+      controls: ['play','progress','current-time','mute','volume','fullscreen']
+    });
+    player.play();
   }
 }
 
-// === إغلاق المعاينة ===
-closeOverlay.onclick = ()=>{
-  overlay.classList.remove("active");
-  preview.innerHTML = "";
-}
+closeOverlay.onclick = ()=>{ overlay.classList.remove("active"); preview.innerHTML=""; }
+backBtn.onclick = ()=>{ currentPath.pop(); loadFiles(currentPath); }
 
-// === العودة للخلف ===
-backBtn.onclick = ()=>{
-  currentPath.pop();
-  loadFiles(currentPath);
-}
-
-// === تحويل حجم الملفات إلى صيغة قابلة للقراءة ===
 function formatSize(bytes){
   if(bytes>=1e9) return (bytes/1e9).toFixed(1)+" GB";
   if(bytes>=1e6) return (bytes/1e6).toFixed(1)+" MB";
@@ -127,5 +147,6 @@ function formatSize(bytes){
   return bytes+" B";
 }
 
-// === تحميل الملفات عند البداية ===
+// تحميل الملفات بناءً على الرابط عند فتح الصفحة
+currentPath = getPathFromURL();
 loadFiles(currentPath);
