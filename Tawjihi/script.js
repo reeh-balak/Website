@@ -1,152 +1,172 @@
-const baseAPI = "https://api.github.com/repos/reeh-balak/Website/contents/Files";
-const basePageURL = "https://reeh-balak.github.io/Website/Files";
-let currentPath = [];
+(function(){
+  // استبدل هذه القيمة المشفّرة محلياً فقط (لا ترفعها للمستودع العام)
+  const _e = "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";
 
-// 🔐 token مشفر Base64
-const encodedToken = "Z2hwX3pURHo1Tm00akh1NWdjWWxoUlZ6eHh6MU9NQzh2QTI0T2dQMA==";
-const token = atob(encodedToken);
-const headers = { Authorization: `token ${token}` };
+  const _api = "https://api.github.com/repos/reeh-balak/Website/contents/Files";
+  const _page = "https://reeh-balak.github.io/Website/Files";
+  let _cp = [];
+  let _token = (typeof atob === "function" ? atob(_e) : "");
+  const _hdr = { Authorization: `token ${_token}` };
 
-const filesList = document.getElementById("filesList");
-const backBtn = document.querySelector(".back-btn");
-const overlay = document.getElementById("overlay");
-const preview = document.getElementById("preview");
-const closeOverlay = document.getElementById("closeOverlay");
-const pathBar = document.getElementById("pathBar");
+  const _$ = id => document.getElementById(id);
+  const _q = s => document.querySelector(s);
+  const filesList = _$("filesList");
+  const backBtn = _q(".back-btn");
+  const overlay = _$("overlay");
+  const preview = _$("preview");
+  const closeOverlay = _$("closeOverlay");
+  const pathBar = _$("pathBar");
 
-async function loadFiles(pathArray){
-  const path = pathArray.join('/');
-  const url = path ? `${baseAPI}/${path}` : baseAPI;
-  const data = await (await fetch(url, {headers})).json();
-  filesList.innerHTML = "";
-  backBtn.style.display = pathArray.length>0 ? "inline-block" : "none";
-
-  updatePathBar(pathArray);
-
-  if(data.length===0){
-    const empty = document.createElement("div");
-    empty.textContent="No files found";
-    empty.style.textAlign="center";
-    empty.style.padding="1rem";
-    filesList.appendChild(empty);
-    return;
+  function fmtSize(b){
+    if(!b && b!==0) return "";
+    if(b>=1e9) return (b/1e9).toFixed(1)+" GB";
+    if(b>=1e6) return (b/1e6).toFixed(1)+" MB";
+    if(b>=1e3) return (b/1e3).toFixed(1)+" kB";
+    return b+" B";
   }
 
-  data.forEach(item=>{
-    const div = document.createElement("div");
-    div.className="file-item";
+  function updPathBar(arr){
+    pathBar.innerHTML = "";
+    const root = document.createElement("span");
+    root.textContent = "Files";
+    root.onclick = ()=>{ _cp = []; loadFiles(_cp); };
+    pathBar.appendChild(root);
 
-    const nameDiv = document.createElement("div");
-    nameDiv.className="file-name " + (item.type==="dir"?"dir-icon":"file-icon");
-    nameDiv.textContent = item.name;
-
-    const sizeDiv = document.createElement("div");
-    sizeDiv.className="file-size";
-    sizeDiv.textContent = item.size ? formatSize(item.size) : "";
-
-    div.appendChild(nameDiv);
-    div.appendChild(sizeDiv);
-
-    div.onclick = (() => {
-      let isLoading = false; 
-      return () => {
-        if(isLoading) return;
-        isLoading = true;
-
-        if(item.type === "dir"){
-          currentPath.push(item.name);
-          loadFiles(currentPath).finally(() => { isLoading = false; });
-        } else {
-          openPreview(item.name);
-          isLoading = false;
-        }
-      };
-    })();
-    filesList.appendChild(div);
-  });
-}
-
-function updatePathBar(pathArray){
-  pathBar.innerHTML = "";
-  const rootSpan = document.createElement("span");
-  rootSpan.textContent = "Files";
-  rootSpan.onclick = ()=>{ currentPath=[]; loadFiles(currentPath); };
-  pathBar.appendChild(rootSpan);
-
-  pathArray.forEach((folder, index)=>{
-    const sep = document.createElement("span");
-    sep.className="sep";
-    sep.textContent = "/";
-    pathBar.appendChild(sep);
-
-    const span = document.createElement("span");
-    span.textContent = folder;
-    span.onclick = ()=>{ currentPath = pathArray.slice(0,index+1); loadFiles(currentPath); };
-    pathBar.appendChild(span);
-  });
-
-  const urlPath = pathArray.length > 0 ? "/Files/" + pathArray.join("/") : "/Files";
-  history.replaceState(null, "", urlPath);
-}
-
-function getPathFromURL() {
-  const path = window.location.pathname.split("/Files/")[1];
-  return path ? path.split("/").filter(p => p) : [];
-}
-
-function openPreview(fileName){
-  const ext = fileName.split('.').pop().toLowerCase();
-  let url = basePageURL;
-  if(currentPath.length>0) url+="/"+currentPath.join('/');
-  url+="/"+fileName;
-
-  overlay.classList.add("active");
-  preview.innerHTML = "";
-  let element;
-
-  if(["mp4","webm","ogg"].includes(ext)){
-    element = document.createElement("video");
-    element.src = url;
-    element.setAttribute("playsinline","");
-    element.setAttribute("controls","");
-    element.setAttribute("autoplay","");
-  } else if(["mp3","wav","ogg"].includes(ext)){
-    element = document.createElement("audio");
-    element.src = url;
-    element.setAttribute("controls","");
-  } else if(["jpg","jpeg","png","gif","webp","svg"].includes(ext)){
-    element = document.createElement("img");
-    element.src = url;
-    element.style.objectFit = "contain";
-  } else {
-    element = document.createElement("iframe");
-    element.src = url;
-  }
-
-  element.style.width = "100%";
-  element.style.height = "100%";
-  element.style.borderRadius = "15px";
-  preview.appendChild(element);
-
-  if(["VIDEO","AUDIO"].includes(element.tagName)){
-    const player = new Plyr(element, { 
-      autoplay: true,
-      controls: ['play','progress','current-time','mute','volume','fullscreen']
+    arr.forEach((f,i)=>{
+      const s = document.createElement("span");
+      s.className = "sep";
+      s.textContent = "/";
+      pathBar.appendChild(s);
+      const p = document.createElement("span");
+      p.textContent = f;
+      p.onclick = ()=>{ _cp = arr.slice(0,i+1); loadFiles(_cp); };
+      pathBar.appendChild(p);
     });
-    player.play();
+
+    const urlPath = arr.length>0 ? "/Files/"+arr.join("/") : "/Files";
+    try { history.replaceState(null,"",urlPath); } catch(e){}
   }
-}
 
-closeOverlay.onclick = ()=>{ overlay.classList.remove("active"); preview.innerHTML=""; }
-backBtn.onclick = ()=>{ currentPath.pop(); loadFiles(currentPath); }
+  async function loadFiles(pathArr){
+    const path = pathArr.join("/");
+    const url = path ? `${_api}/${path}` : _api;
+    filesList.innerHTML = "";
+    backBtn.style.display = pathArr.length>0 ? "inline-block" : "none";
+    updPathBar(pathArr);
 
-function formatSize(bytes){
-  if(bytes>=1e9) return (bytes/1e9).toFixed(1)+" GB";
-  if(bytes>=1e6) return (bytes/1e6).toFixed(1)+" MB";
-  if(bytes>=1e3) return (bytes/1e3).toFixed(1)+" kB";
-  return bytes+" B";
-}
+    let data;
+    try{
+      const res = await fetch(url, { headers: _hdr });
+      if(!res.ok){
+        const errtxt = document.createElement("div");
+        errtxt.textContent = `Error: ${res.status} ${res.statusText}`;
+        errtxt.style.textAlign="center";
+        errtxt.style.padding="1rem";
+        filesList.appendChild(errtxt);
+        return;
+      }
+      data = await res.json();
+    }catch(err){
+      const errtxt = document.createElement("div");
+      errtxt.textContent = "Network error";
+      errtxt.style.textAlign="center";
+      errtxt.style.padding="1rem";
+      filesList.appendChild(errtxt);
+      return;
+    }
 
-// تحميل الملفات بناءً على الرابط عند فتح الصفحة
-currentPath = getPathFromURL();
-loadFiles(currentPath);
+    if(!Array.isArray(data) || data.length===0){
+      const empty = document.createElement("div");
+      empty.textContent="No files found";
+      empty.style.textAlign="center";
+      empty.style.padding="1rem";
+      filesList.appendChild(empty);
+      return;
+    }
+
+    data.forEach(item=>{
+      const row = document.createElement("div");
+      row.className = "file-item";
+      const nm = document.createElement("div");
+      nm.className = "file-name " + (item.type==="dir" ? "dir-icon" : "file-icon");
+      nm.textContent = item.name;
+      const sz = document.createElement("div");
+      sz.className = "file-size";
+      sz.textContent = item.size ? fmtSize(item.size) : "";
+      row.appendChild(nm);
+      row.appendChild(sz);
+
+      let busy=false;
+      row.onclick = (()=> {
+        return ()=> {
+          if(busy) return;
+          busy=true;
+          if(item.type==="dir"){
+            _cp.push(item.name);
+            loadFiles(_cp).finally(()=>{ busy=false; });
+          } else {
+            openPreview(item.name);
+            busy=false;
+          }
+        };
+      })();
+
+      filesList.appendChild(row);
+    });
+  }
+
+  function getPathFromURL(){
+    const p = window.location.pathname.split("/Files/")[1];
+    return p ? p.split("/").filter(Boolean) : [];
+  }
+
+  function openPreview(fileName){
+    const ext = (fileName.split(".").pop()||"").toLowerCase();
+    let url = _page;
+    if(_cp.length>0) url += "/"+_cp.join("/");
+    url += "/"+fileName;
+
+    overlay.classList.add("active");
+    preview.innerHTML = "";
+    let el;
+    if(["mp4","webm","ogg"].includes(ext)){
+      el = document.createElement("video");
+      el.src = url;
+      el.setAttribute("playsinline","");
+      el.setAttribute("controls","");
+      el.setAttribute("autoplay","");
+    } else if(["mp3","wav","ogg"].includes(ext)){
+      el = document.createElement("audio");
+      el.src = url;
+      el.setAttribute("controls","");
+    } else if(["jpg","jpeg","png","gif","webp","svg"].includes(ext)){
+      el = document.createElement("img");
+      el.src = url;
+      el.style.objectFit = "contain";
+    } else {
+      el = document.createElement("iframe");
+      el.src = url;
+    }
+    el.style.width = "100%";
+    el.style.height = "100%";
+    el.style.borderRadius = "15px";
+    preview.appendChild(el);
+
+    try{
+      if((el.tagName==="VIDEO" || el.tagName==="AUDIO") && typeof Plyr !== "undefined"){
+        const player = new Plyr(el, {
+          autoplay: true,
+          controls: ['play','progress','current-time','mute','volume','fullscreen']
+        });
+        if(typeof player.play === "function") player.play();
+      }
+    }catch(e){}
+  }
+
+  closeOverlay.onclick = ()=>{ overlay.classList.remove("active"); preview.innerHTML=""; };
+  backBtn.onclick = ()=>{ _cp.pop(); loadFiles(_cp); };
+
+  _cp = getPathFromURL();
+  loadFiles(_cp);
+
+})();
