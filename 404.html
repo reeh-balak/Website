@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الصفحة غير موجودة</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>أوه! الصفحة غير موجودة</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
     body {
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
-      overflow: hidden;
+      padding: 50px;
+      color: #333;
     }
 
-    .container {
-      position: relative;
+    .illustration {
+      max-width: 300px;
+      margin: 0 auto 30px;
+      animation: float 3s ease-in-out infinite;
     }
 
     .number {
-      font-size: 10rem;
+      font-size: 100px;
       font-weight: bold;
-      color: #2c3e50;
+      color: #FF6F61;
       animation: bounce 1.5s infinite;
     }
 
     .message {
-      font-size: 1.8rem;
-      color: #34495e;
-      margin-top: 20px;
-      animation: fadeIn 2s ease-in-out;
+      font-size: 24px;
+      margin: 20px 0;
     }
 
     .home-link {
       display: inline-block;
-      margin-top: 30px;
+      margin-top: 20px;
       padding: 12px 25px;
-      background-color: #3498db;
+      background-color: #FF6F61;
       color: white;
-      border-radius: 25px;
+      border-radius: 30px;
       text-decoration: none;
+      font-size: 18px;
       transition: background 0.3s ease;
     }
 
     .home-link:hover {
-      background-color: #2980b9;
+      background-color: #e85c4f;
+    }
+
+    .decorations {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .decorations img {
+      width: 60px;
+      animation: spin 10s linear infinite;
     }
 
     @keyframes bounce {
@@ -60,61 +65,41 @@
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-20px);
+        transform: translateY(-15px);
       }
-    }
-
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .ghost {
-      position: absolute;
-      top: -80px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 100px;
-      background: white;
-      border-radius: 50% 50% 0 0;
-      border: 2px solid #ccc;
-      animation: float 2s ease-in-out infinite;
-    }
-
-    .ghost::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      width: 100%;
-      height: 20px;
-      background: white;
-      border-radius: 0 0 50% 50%;
-      box-shadow: 0 0 0 2px #ccc;
     }
 
     @keyframes float {
       0%, 100% {
-        transform: translate(-50%, 0);
+        transform: translateY(0);
       }
       50% {
-        transform: translate(-50%, -10px);
+        transform: translateY(-10px);
       }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="ghost"></div>
-    <div class="number">404</div>
-    <div class="message">أوه! الصفحة اللي تدور عليها ضايعة في الفضاء 🤷‍♂️</div>
-    <a class="home-link" href="/">رجعني للصفحة الرئيسية</a>
+  <!-- صورة رئيسية (باص مدرسة كرتوني) -->
+  <img class="illustration" src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png" alt="باص مدرسة كرتوني" />
+
+  <div class="number">404</div>
+  <div class="message">أوه لا! الصفحة راحت تتمشى في ساحة المدرسة! 🏫</div>
+
+  <a class="home-link" href="/">عودة للصفحة الرئيسية</a>
+
+  <!-- صور أدوات مدرسية -->
+  <div class="decorations">
+    <img src="https://cdn-icons-png.flaticon.com/512/446/446073.png" alt="قلم رصاص" />
+    <img src="https://cdn-icons-png.flaticon.com/512/3145/3145765.png" alt="دفتر" />
+    <img src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="فرشاة رسم" />
+    <img src="https://cdn-icons-png.flaticon.com/512/2890/2890897.png" alt="كتاب مفتوح" />
+    <img src="https://cdn-icons-png.flaticon.com/512/2099/2099077.png" alt="مسطرة" />
   </div>
 </body>
 </html>
