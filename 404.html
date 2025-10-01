@@ -6,36 +6,43 @@
   <title>أوه! الصفحة غير موجودة</title>
   <style>
     body {
-      background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+      background: linear-gradient(135deg, #fceabb, #f8b500);
       font-family: 'Comic Sans MS', cursive, sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 50px 20px;
       color: #333;
     }
 
-    .illustration {
-      max-width: 300px;
+    .image-container {
+      max-width: 350px;
       margin: 0 auto 30px;
-      animation: float 3s ease-in-out infinite;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
     .number {
       font-size: 100px;
       font-weight: bold;
-      color: #FF6F61;
-      animation: bounce 1.5s infinite;
+      color: #d35400;
+      margin-top: 20px;
     }
 
     .message {
       font-size: 24px;
       margin: 20px 0;
+      color: #6C3483;
     }
 
     .home-link {
       display: inline-block;
       margin-top: 20px;
       padding: 12px 25px;
-      background-color: #FF6F61;
+      background-color: #d35400;
       color: white;
       border-radius: 30px;
       text-decoration: none;
@@ -44,62 +51,27 @@
     }
 
     .home-link:hover {
-      background-color: #e85c4f;
+      background-color: #b03e00;
     }
 
-    .decorations {
-      margin-top: 40px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .decorations img {
-      width: 60px;
-      animation: spin 10s linear infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
+    @media (max-width: 500px) {
+      .number {
+        font-size: 70px;
       }
-      50% {
-        transform: translateY(-15px);
+      .message {
+        font-size: 20px;
       }
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <!-- صورة رئيسية (باص مدرسة كرتوني) -->
-  <img class="illustration" src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png" alt="باص مدرسة كرتوني" />
+  <div class="image-container">
+    <img src="https://i.ibb.co/VYQvFgR3/57da64d9519a.png" alt="رسم كرتوني لطالب في المدرسة">
+  </div>
 
   <div class="number">404</div>
-  <div class="message">أوه لا! الصفحة راحت تتمشى في ساحة المدرسة! 🏫</div>
+  <div class="message">أوه! الصفحة راحت تتعلم في صف ثاني 😅</div>
 
-  <a class="home-link" href="/">عودة للصفحة الرئيسية</a>
-
-  <!-- صور أدوات مدرسية -->
-  <div class="decorations">
-    <img src="https://cdn-icons-png.flaticon.com/512/446/446073.png" alt="قلم رصاص" />
-    <img src="https://cdn-icons-png.flaticon.com/512/3145/3145765.png" alt="دفتر" />
-    <img src="https://cdn-icons-png.flaticon.com/512/169/169367.png" alt="فرشاة رسم" />
-    <img src="https://cdn-icons-png.flaticon.com/512/2890/2890897.png" alt="كتاب مفتوح" />
-    <img src="https://cdn-icons-png.flaticon.com/512/2099/2099077.png" alt="مسطرة" />
-  </div>
+  <a class="home-link" href="/">العودة للصفحة الرئيسية</a>
 </body>
 </html>
