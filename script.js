@@ -17,7 +17,7 @@ function isMobile() {
 
 // إعادة التوجيه السريع والفوري للمستخدمين غير المحمولين
 if (!isMobile()) {
-  window.location.replace("https://reeh-balak.github.io/Website/Download-the-app/");
+  window.location.replace("https://reeh-balak.github.io/Download-the-app/");
 }
 
 const dataURL = decodeBase64(encodedDataURL);
@@ -160,3 +160,4 @@ function recoverAccount() {
       showNotification('serverError');
     });
 }
+
